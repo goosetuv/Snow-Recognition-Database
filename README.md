@@ -25,7 +25,7 @@ Download the latest release and run!
 - Supported on Snow License Manager 8 and Snow License Manager 9
 
 
-## Usage (Optional)
+## Usage
 
 - Open SRD.exe
 - Create a database connection to your Snow SQL Server
