@@ -6,9 +6,8 @@ Windows Application that allows you to view the Unassigned and Assigned Software
 
 ---
 
-## Screenshots
+## Screenshot
 <a href="http://github.com/goosetuv/snow-recognition-database"><img src="/images/screenshot-2.0.PNG" title="Snow Recognition Database 2.0" alt="SRD Screenshot 2.0"></a>
-<a href="http://github.com/goosetuv/snow-recognition-database"><img src="/images/screenshot-2.0-connection.PNG" title="Snow Recognition Database 2.0" alt="SRD Screenshot 2.0"></a>
 
 ## Installation
 
