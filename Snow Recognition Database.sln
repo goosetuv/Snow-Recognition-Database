@@ -1,0 +1,31 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.29403.142
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Snow Recognition Database", "Snow Recognition Database.csproj", "{6803A691-9C92-4995-8D2B-71C4CBEB3FED}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Debug|x64 = Debug|x64
+		Release|Any CPU = Release|Any CPU
+		Release|x64 = Release|x64
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{6803A691-9C92-4995-8D2B-71C4CBEB3FED}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6803A691-9C92-4995-8D2B-71C4CBEB3FED}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6803A691-9C92-4995-8D2B-71C4CBEB3FED}.Debug|x64.ActiveCfg = Debug|x64
+		{6803A691-9C92-4995-8D2B-71C4CBEB3FED}.Debug|x64.Build.0 = Debug|x64
+		{6803A691-9C92-4995-8D2B-71C4CBEB3FED}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6803A691-9C92-4995-8D2B-71C4CBEB3FED}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6803A691-9C92-4995-8D2B-71C4CBEB3FED}.Release|x64.ActiveCfg = Release|x64
+		{6803A691-9C92-4995-8D2B-71C4CBEB3FED}.Release|x64.Build.0 = Release|x64
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {FE95260E-829F-43D4-9D76-37CD628F4CA3}
+	EndGlobalSection
+EndGlobal
