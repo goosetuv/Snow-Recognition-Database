@@ -29,5 +29,14 @@ Download the latest release and run!
 - Open SRD.exe
 - Create a database connection to your Snow SQL Server
 
+## Known Issue
+### Execution Timeout Expired
+Execution Timeout is related to the timeout period between the application and Microsoft SQL Server. This issue is prominent in Snow Recognition Database 2.0 due to the additional search features such as Unassigned Applications.
+
+This issue will likely be found on a case by case basis and does not affect all users, it is prominent on users with large vFilterSoftware tables in the Snow Inventory database.
+
+#### Fix
+When inside of your connection, click on File > Application Settings > Database and increase the Command Timeout until the error no longer appears. The more data you have in the system, the higher the timeout will need to be.
+
 ## Contributing
 Happy for anyone to make a pull request to assist in making the application better.
