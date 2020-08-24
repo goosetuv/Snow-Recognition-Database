@@ -8,10 +8,11 @@
     <OutputType>WinExe</OutputType>
     <RootNamespace>SRD</RootNamespace>
     <AssemblyName>SRD</AssemblyName>
-    <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.6</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
     <Deterministic>true</Deterministic>
+    <TargetFrameworkProfile />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <PlatformTarget>AnyCPU</PlatformTarget>
@@ -66,7 +67,7 @@
       <HintPath>packages\EPPlus.5.1.2\lib\net45\EPPlus.dll</HintPath>
     </Reference>
     <Reference Include="Laim.Utility">
-      <HintPath>..\Laim.Utility\bin\x64\Debug\Laim.Utility.dll</HintPath>
+      <HintPath>..\..\..\..\..\v1.5-64b\Laim.Utility.dll</HintPath>
     </Reference>
     <Reference Include="PresentationCore" />
     <Reference Include="System" />

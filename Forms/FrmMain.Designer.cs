@@ -63,6 +63,7 @@
             this.cSearchColumns = new System.Windows.Forms.ComboBox();
             this.btnAppListLoadAll = new System.Windows.Forms.Button();
             this.tcMain = new System.Windows.Forms.TabControl();
+            this.cbCustomerPicker = new System.Windows.Forms.ComboBox();
             this.menuStrip1.SuspendLayout();
             this.tabUnassignedList.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgvUnassignedList)).BeginInit();
@@ -294,7 +295,7 @@
             this.dgvAppListRules.MultiSelect = false;
             this.dgvAppListRules.Name = "dgvAppListRules";
             this.dgvAppListRules.ReadOnly = true;
-            this.dgvAppListRules.Size = new System.Drawing.Size(655, 145);
+            this.dgvAppListRules.Size = new System.Drawing.Size(150, 46);
             this.dgvAppListRules.TabIndex = 7;
             this.dgvAppListRules.RowPostPaint += new System.Windows.Forms.DataGridViewRowPostPaintEventHandler(this.dgvRowPostPaint);
             // 
@@ -329,9 +330,9 @@
             this.gbSearch.Controls.Add(this.cSearchOperator);
             this.gbSearch.Controls.Add(this.lblSearchColumn);
             this.gbSearch.Controls.Add(this.cSearchColumns);
-            this.gbSearch.Location = new System.Drawing.Point(7, 56);
+            this.gbSearch.Location = new System.Drawing.Point(7, 83);
             this.gbSearch.Name = "gbSearch";
-            this.gbSearch.Size = new System.Drawing.Size(149, 386);
+            this.gbSearch.Size = new System.Drawing.Size(149, 359);
             this.gbSearch.TabIndex = 2;
             this.gbSearch.TabStop = false;
             this.gbSearch.Text = "Search Criteria (Optional)";
@@ -430,12 +431,22 @@
             this.tcMain.TabIndex = 0;
             this.tcMain.SelectedIndexChanged += new System.EventHandler(this.tcMain_SelectedIndexChanged);
             // 
+            // cbCustomerPicker
+            // 
+            this.cbCustomerPicker.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.cbCustomerPicker.FormattingEnabled = true;
+            this.cbCustomerPicker.Location = new System.Drawing.Point(7, 56);
+            this.cbCustomerPicker.Name = "cbCustomerPicker";
+            this.cbCustomerPicker.Size = new System.Drawing.Size(149, 21);
+            this.cbCustomerPicker.TabIndex = 5;
+            // 
             // FrmMain
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.White;
             this.ClientSize = new System.Drawing.Size(825, 501);
+            this.Controls.Add(this.cbCustomerPicker);
             this.Controls.Add(this.tcMain);
             this.Controls.Add(this.btnAppListLoadAll);
             this.Controls.Add(this.gbSearchResults);
@@ -505,6 +516,7 @@
         private System.Windows.Forms.ToolStripMenuItem exportToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem exportAsXlsxToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem exportAsCSVToolStripMenuItem;
+        private System.Windows.Forms.ComboBox cbCustomerPicker;
     }
 }
 

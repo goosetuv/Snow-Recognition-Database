@@ -178,6 +178,15 @@ namespace SRD.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to SELECT Name FROM SnowLicenseManager.dbo.tblCID.
+        /// </summary>
+        internal static string GetCustomers {
+            get {
+                return ResourceManager.GetString("GetCustomers", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to SELECT U.CID, 
         ///       S.*
         ///FROM SnowLicenseManager.dbo.tblSoftwareCIDUnassigned U
@@ -207,7 +216,7 @@ namespace SRD.Properties {
         ///			   FS.SwLicenseNumber, 
         ///			   FS.SwLastScanned
         ///FROM SnowInventory.inv.vFilterSoftware FS LEFT JOIN SnowInventory.inv.vAllComputers AC ON AC.ComputerID = FS.ComputerID 
-        ///WHERE {ColumnName} = @Searc [rest of string was truncated]&quot;;.
+        ///WHERE {Col [rest of string was truncated]&quot;;.
         /// </summary>
         internal static string GetUnassignedApplicationListComp {
             get {

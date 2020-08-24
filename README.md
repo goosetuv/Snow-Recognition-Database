@@ -23,6 +23,18 @@ Download the latest release and run!
 - Default column visibility options
 - Supported on Snow License Manager 8 and Snow License Manager 9
 
+## Build from Source
+
+To build Snow Recognition Database from source, you'll need to add two references/dependencies before it will build. 
+
+- [EPPlus 5.1.2](https://github.com/EPPlusSoftware/EPPlus)
+- [Laim.Utility 1.5](https://ext.laim.scot/packages/?dir=laim.utility/v1.5)
+
+### Laim.Utility v1.5
+Download v1.5 from the above link and add it as a standard reference you would a usual .dll file. 
+
+### EPPlus
+Add EPPlus via NUGET Manager, you should be able to just restore the already added version.
 
 ## Usage
 

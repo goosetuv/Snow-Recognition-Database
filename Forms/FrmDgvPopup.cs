@@ -32,7 +32,7 @@ namespace SRD.Forms
                     case "UnassignedCompSearch":
                         Text = "Computers with Unassigned Application";
                         List<SqlParameter> SqlParameters = new List<SqlParameter> { new SqlParameter("@SearchTerm", SearchString) };
-                        dgvPopup.DataSource = MSSqlServer.ExecuteRead(SqlConnection, Properties.Sql.GetUnassignedApplicationListComp.Replace("{ColumnName}", "FS.SwPathName"), SqlParameters, DatabaseCommandTimeout);
+                        dgvPopup.DataSource = MSSqlServer.ExecuteReadDataTable(SqlConnection, Properties.Sql.GetUnassignedApplicationListComp.Replace("{ColumnName}", "FS.SwPathName"), SqlParameters, DatabaseCommandTimeout);
                         break;
                     default:
                         Text = "Data Popup";

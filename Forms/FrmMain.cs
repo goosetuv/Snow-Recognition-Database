@@ -46,12 +46,20 @@ namespace SRD
             }
 
             /* Populate the DataGridViews with default columns */
-            Local.DgvOnLoadPopulator(dgvAppList, MSSqlServer.ExecuteRead(SqlConnection, Properties.Sql.GetApplicationListEmpty, cmdTimeout: DatabaseCommandTimeout), HiddenColumnsAppList);
-            Local.DgvOnLoadPopulator(dgvUnassignedList, MSSqlServer.ExecuteRead(SqlConnection, Properties.Sql.GetUnassignedApplicationListEmpty, cmdTimeout: DatabaseCommandTimeout), HiddenColumnsAppUnassignedList);
+            Local.DgvOnLoadPopulator(dgvAppList, MSSqlServer.ExecuteReadDataTable(SqlConnection, Properties.Sql.GetApplicationListEmpty, cmdTimeout: DatabaseCommandTimeout), HiddenColumnsAppList);
+            Local.DgvOnLoadPopulator(dgvUnassignedList, MSSqlServer.ExecuteReadDataTable(SqlConnection, Properties.Sql.GetUnassignedApplicationListEmpty, cmdTimeout: DatabaseCommandTimeout), HiddenColumnsAppUnassignedList);
 
             /* Populate the column selector with the first view columns (App List)*/
             Local.ColumnPopulator(dgvAppList, cSearchColumns);
-            
+
+            /* Populate the customer selector */
+            foreach(string i in MSSqlServer.ExecuteReadList(SqlConnection, Properties.Sql.GetCustomers))
+            {
+                cbCustomerPicker.Items.Add(i);
+            }
+
+            cbCustomerPicker.SelectedIndex = 0;
+
             /* Enable Column Selectors for the DataGridViews */
             _ = new ColumnSelector.DataGridViewColumnSelector() { DataGridView = dgvAppList, MaxHeight = 200, Width = 110 };
             _ = new ColumnSelector.DataGridViewColumnSelector() { DataGridView = dgvAppListRules, MaxHeight = 200, Width = 110 };
@@ -64,29 +72,29 @@ namespace SRD
         private void btnAppListLoadAll_Click(object sender, EventArgs e)
         {
 
-            bool proceedWithExport = true;
+            bool proceedWithRun = true;
             DialogResult dr = MessageBox.Show("Show Data loads all data available in the database for your choosen tab which may take a long time and use a large amount of your System Memory.  If you proceed, the application will freeze until the data load is completed.  Do you wish to continue?",
                "Show Data Notice", MessageBoxButtons.YesNo, MessageBoxIcon.Warning);
 
             if (dr == DialogResult.Yes)
             {
-                proceedWithExport = true;
+                proceedWithRun = true;
             }
             else
             {
-                proceedWithExport = false;
+                proceedWithRun = false;
             }
 
-            if(proceedWithExport == true)
+            if(proceedWithRun == true)
             {
                 switch (tcMain.SelectedTab.Name)
                 {
                     case "tabApplicationList":
-                        dgvAppList.DataSource = MSSqlServer.ExecuteRead(SqlConnection, Properties.Sql.GetApplicationListAll, cmdTimeout: DatabaseCommandTimeout);
+                        dgvAppList.DataSource = MSSqlServer.ExecuteReadDataTable(SqlConnection, Properties.Sql.GetApplicationListAll, cmdTimeout: DatabaseCommandTimeout);
                         lblReturnedRows.Text = string.Format("Rows: {0:N0}", dgvAppList.RowCount);
                         break;
                     case "tabUnassignedList":
-                        dgvUnassignedList.DataSource = MSSqlServer.ExecuteRead(SqlConnection, Properties.Sql.GetUnassignedApplicationListAll, cmdTimeout: DatabaseCommandTimeout);
+                        dgvUnassignedList.DataSource = MSSqlServer.ExecuteReadDataTable(SqlConnection, Properties.Sql.GetUnassignedApplicationListAll, cmdTimeout: DatabaseCommandTimeout);
                         lblReturnedRows.Text = string.Format("Rows: {0:N0}", dgvUnassignedList.RowCount);
                         break;
                 }
@@ -111,11 +119,11 @@ namespace SRD
                                 case "Family Name": column = "AF.Name"; break;
                                 default: column = cSearchColumns.Text; break;
                             }
-                            dgvAppList.DataSource = MSSqlServer.ExecuteRead(SqlConnection, Properties.Sql.GetApplicationSearch.Replace("{ColumnName}", column).Replace("{Operator}", cSearchOperator.Text), SqlParameters, DatabaseCommandTimeout);
+                            dgvAppList.DataSource = MSSqlServer.ExecuteReadDataTable(SqlConnection, Properties.Sql.GetApplicationSearch.Replace("{ColumnName}", column).Replace("{Operator}", cSearchOperator.Text), SqlParameters, DatabaseCommandTimeout);
                             lblReturnedRows.Text = string.Format("Rows: {0:N0}", dgvAppList.RowCount);
                             break;
                         case "tabUnassignedList":
-                            dgvUnassignedList.DataSource = MSSqlServer.ExecuteRead(SqlConnection, Properties.Sql.GetUnassignedApplicationListSearch.Replace("{ColumnName}", column).Replace("{Operator}", cSearchOperator.Text), SqlParameters, DatabaseCommandTimeout);
+                            dgvUnassignedList.DataSource = MSSqlServer.ExecuteReadDataTable(SqlConnection, Properties.Sql.GetUnassignedApplicationListSearch.Replace("{ColumnName}", column).Replace("{Operator}", cSearchOperator.Text), SqlParameters, DatabaseCommandTimeout);
                             lblReturnedRows.Text = string.Format("Rows: {0:N0}", dgvUnassignedList.RowCount);
                             break;
                         default:
@@ -166,7 +174,7 @@ namespace SRD
                 {
                     new SqlParameter("@AppID", dgvAppList.Rows[e.RowIndex].Cells[0].Value)
                 };
-                dgvAppListRules.DataSource = MSSqlServer.ExecuteRead(SqlConnection, sql, SqlParameters, DatabaseCommandTimeout);
+                dgvAppListRules.DataSource = MSSqlServer.ExecuteReadDataTable(SqlConnection, sql, SqlParameters, DatabaseCommandTimeout);
 
                 /* Hides the columns */
                 foreach (DataGridViewColumn col in dgvAppListRules.Columns)
@@ -196,7 +204,7 @@ namespace SRD
 
         private void ViewHelpToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            System.Diagnostics.Process.Start("https://laim.scot/support/kb");
+            System.Diagnostics.Process.Start("https://github.com/goosetuv/snow-recognition-database");
         }
 
         private void ExportDirectoryToolStripMenuItem_Click(object sender, EventArgs e)

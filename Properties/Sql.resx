@@ -303,6 +303,9 @@ FROM SnowLicenseManager.dbo.tblApplication A
 WHERE {ColumnName} {Operator} @SearchTerm
 ORDER BY A.Name;</value>
   </data>
+  <data name="GetCustomers" xml:space="preserve">
+    <value>SELECT Name FROM SnowLicenseManager.dbo.tblCID</value>
+  </data>
   <data name="GetUnassignedApplicationListAll" xml:space="preserve">
     <value>SELECT U.CID, 
        S.*
