@@ -1,24 +1,31 @@
-﻿using Laim;
+﻿#region Dependencies
+using Laim;
 using System;
 using System.Collections.Generic;
 using System.Configuration;
 using System.Linq;
 using System.Windows.Forms;
+#endregion
 
 namespace SRD.Forms
 {
     public partial class FrmSettings : Form
     {
+        #region Fields
         public bool FirstStart { get; set; }
+        #endregion
 
+        #region Constructor
         public FrmSettings()
         {
             InitializeComponent();
         }
+        #endregion
 
+        #region Events
         private void FrmSettings_Load(object sender, EventArgs e)
         {
-            if(FirstStart == false)
+            if (FirstStart == false)
             {
                 try
                 {
@@ -32,12 +39,12 @@ namespace SRD.Forms
                         etd += 1;
                     }
 
-                   List<string> MemorySavingDoubleBuffer = XmlConfigurator.Read(Local.AppConfig, "MemorySavingDoubleBuffer").Split(',').ToList();
-                    foreach(string i in MemorySavingDoubleBuffer)
+                    List<string> MemorySavingDoubleBuffer = XmlConfigurator.Read(Local.AppConfig, "MemorySavingDoubleBuffer").Split(',').ToList();
+                    foreach (string i in MemorySavingDoubleBuffer)
                     {
-                        if(i == "dgvAppList") { cbMemoryAppList.Checked = true; }
-                        if(i == "dgvAppListRules") { cbMemoryAppListRules.Checked = true; }
-                        if(i == "dgvUnassignedList") { cbMemoryUnassignedAppList.Checked = true; }
+                        if (i == "dgvAppList") { cbMemoryAppList.Checked = true; }
+                        if (i == "dgvAppListRules") { cbMemoryAppListRules.Checked = true; }
+                        if (i == "dgvUnassignedList") { cbMemoryUnassignedAppList.Checked = true; }
                     }
 
                     txtAppListColumns.Text = XmlConfigurator.Read(Local.AppConfig, "HiddenColumnsAppList");
@@ -74,11 +81,12 @@ namespace SRD.Forms
         {
             try
             {
-                if(cblReportingTableDesign.SelectedIndex < 0 || txtReportingWorkbookCompany.Text.Length < 0 || txtReportingWorkbookTitle.Text.Length < 0 || txtReportingWorksheetName.Text.Length < 0)
+                if (cblReportingTableDesign.SelectedIndex < 0 || txtReportingWorkbookCompany.Text.Length < 0 || txtReportingWorkbookTitle.Text.Length < 0 || txtReportingWorksheetName.Text.Length < 0)
                 {
                     MessageBox.Show("One or more required entries are empty.", "Save Settings", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
                     tcAppSettings.SelectedIndex = 1;
-                } else
+                }
+                else
                 {
 
                     // memory saving check boxes
@@ -110,7 +118,8 @@ namespace SRD.Forms
                     if (FirstStart == false)
                     {
                         MessageBox.Show("Application Restart required for changes to take affect.", "Save Settings", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                    } else
+                    }
+                    else
                     {
                         MessageBox.Show("Configuration Complete", "First Run", MessageBoxButtons.OK, MessageBoxIcon.Information);
                         Close();
@@ -121,15 +130,6 @@ namespace SRD.Forms
             {
                 MessageBox.Show(ex.Message, "Uncaught Exception", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
             }
-        }
-
-        private CommaDelimitedStringCollection MemorySavingDoubleBufferCheck()
-        {
-            CommaDelimitedStringCollection memSaving = new CommaDelimitedStringCollection();
-            if (cbMemoryAppList.Checked){ memSaving.Add("dgvAppList"); }
-            if (cbMemoryAppListRules.Checked) { memSaving.Add("dgvAppListRules"); }
-            if(cbMemoryUnassignedAppList.Checked) { memSaving.Add("dgvUnassignedList"); }
-            return memSaving;
         }
 
         private void btnDatabaseDefault_Click(object sender, EventArgs e)
@@ -143,5 +143,18 @@ namespace SRD.Forms
             cbMemoryAppListRules.Checked = true;
             cbMemoryUnassignedAppList.Checked = true;
         }
+        #endregion
+
+        #region Methods
+        private CommaDelimitedStringCollection MemorySavingDoubleBufferCheck()
+        {
+            CommaDelimitedStringCollection memSaving = new CommaDelimitedStringCollection();
+            if (cbMemoryAppList.Checked) { memSaving.Add("dgvAppList"); }
+            if (cbMemoryAppListRules.Checked) { memSaving.Add("dgvAppListRules"); }
+            if (cbMemoryUnassignedAppList.Checked) { memSaving.Add("dgvUnassignedList"); }
+            return memSaving;
+        }
+        #endregion
+
     }
 }

@@ -190,7 +190,8 @@ namespace SRD.Properties {
         ///   Looks up a localized string similar to SELECT U.CID, 
         ///       S.*
         ///FROM SnowLicenseManager.dbo.tblSoftwareCIDUnassigned U
-        ///     JOIN SnowLicenseManager.dbo.tblSoftware S ON S.SoftwareCheckSum = U.SoftwareCheckSum;.
+        ///     JOIN SnowLicenseManager.dbo.tblSoftware S ON S.SoftwareCheckSum = U.SoftwareCheckSum
+        ///WHERE U.CID = @CID;.
         /// </summary>
         internal static string GetUnassignedApplicationListAll {
             get {

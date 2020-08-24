@@ -1,4 +1,5 @@
-﻿using System;
+﻿#region Dependencies
+using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Windows.Forms;
@@ -6,15 +7,16 @@ using System.Data.SqlClient;
 using Laim;
 using System.Linq;
 using OfficeOpenXml.Table;
+#endregion
 
 namespace SRD
 {
-
     public partial class FrmMain : Form
     {
 
+        #region Fields
         // this is disgusting and i really need to change it to a better method
-        public string SqlConnection { get; set;  }
+        public string SqlConnection { get; set; }
         private readonly List<string> HiddenColumnsAppList = XmlConfigurator.Read(Local.AppConfig, "HiddenColumnsAppList").Split(',').ToList();
         private readonly List<string> HiddenColumnsAppListRules = XmlConfigurator.Read(Local.AppConfig, "HiddenColumnsAppListRules").Split(',').ToList();
         private readonly List<string> HiddenColumnsAppUnassignedList = XmlConfigurator.Read(Local.AppConfig, "HiddenColumnsAppUnassignedList").Split(',').ToList();
@@ -28,17 +30,22 @@ namespace SRD
         private readonly List<string> MemorySavingDoubleBuffer = XmlConfigurator.Read(Local.AppConfig, "MemorySavingDoubleBuffer").Split(',').ToList();
 
         private readonly int ExportRowWarning = 150000;
+        private int PlatformCID = 0; //default customer CID
+        #endregion
 
         public FrmMain() => InitializeComponent();
 
+        // TODO: Code clean up, minimize the amount of repeat code and break things out 
+        // instead of having 90 Line methods 
+        #region Events
         private void FrmMain_Load(object sender, EventArgs e)
         {
             /* Enable Double Buffer to stop weird grid lag */
-            foreach(string v in MemorySavingDoubleBuffer) // checks for all datagridviews that should have doublebuffer enabled
+            foreach (string v in MemorySavingDoubleBuffer) // checks for all datagridviews that should have doublebuffer enabled
             {
-                if(!string.IsNullOrEmpty(v)) // checks if the value is empty
+                if (!string.IsNullOrEmpty(v)) // checks if the value is empty
                 {
-                    if(Controls.Find(v, true).Length > 0) // checks if the control exists
+                    if (Controls.Find(v, true).Length > 0) // checks if the control exists
                     {
                         Utility.SetDoubleBuffered(this.Controls.Find(v, true)[0]);
                     }
@@ -53,7 +60,7 @@ namespace SRD
             Local.ColumnPopulator(dgvAppList, cSearchColumns);
 
             /* Populate the customer selector */
-            foreach(string i in MSSqlServer.ExecuteReadList(SqlConnection, Properties.Sql.GetCustomers))
+            foreach (string i in MSSqlServer.ExecuteReadList(SqlConnection, Properties.Sql.GetCustomers))
             {
                 cbCustomerPicker.Items.Add(i);
             }
@@ -72,7 +79,7 @@ namespace SRD
         private void btnAppListLoadAll_Click(object sender, EventArgs e)
         {
 
-            bool proceedWithRun = true;
+            bool proceedWithRun = false;
             DialogResult dr = MessageBox.Show("Show Data loads all data available in the database for your choosen tab which may take a long time and use a large amount of your System Memory.  If you proceed, the application will freeze until the data load is completed.  Do you wish to continue?",
                "Show Data Notice", MessageBoxButtons.YesNo, MessageBoxIcon.Warning);
 
@@ -80,12 +87,8 @@ namespace SRD
             {
                 proceedWithRun = true;
             }
-            else
-            {
-                proceedWithRun = false;
-            }
 
-            if(proceedWithRun == true)
+            if (proceedWithRun)
             {
                 switch (tcMain.SelectedTab.Name)
                 {
@@ -94,7 +97,8 @@ namespace SRD
                         lblReturnedRows.Text = string.Format("Rows: {0:N0}", dgvAppList.RowCount);
                         break;
                     case "tabUnassignedList":
-                        dgvUnassignedList.DataSource = MSSqlServer.ExecuteReadDataTable(SqlConnection, Properties.Sql.GetUnassignedApplicationListAll, cmdTimeout: DatabaseCommandTimeout);
+                        List<SqlParameter> SqlParameters = new List<SqlParameter> { new SqlParameter("@CID", PlatformCID) };
+                        dgvUnassignedList.DataSource = MSSqlServer.ExecuteReadDataTable(SqlConnection, Properties.Sql.GetUnassignedApplicationListAll, SqlParameters, DatabaseCommandTimeout);
                         lblReturnedRows.Text = string.Format("Rows: {0:N0}", dgvUnassignedList.RowCount);
                         break;
                 }
@@ -130,7 +134,8 @@ namespace SRD
                             break;
                     }
                 }
-            } catch (Exception ex)
+            }
+            catch (Exception ex)
             {
                 MessageBox.Show(ex.Message, "Uncaught Exception", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
             }
@@ -183,7 +188,7 @@ namespace SRD
                 }
             }
         }
-        
+
         /// <summary>
         /// If the tab changes on the tab control, update the search information on the left hand side
         /// </summary>
@@ -215,31 +220,33 @@ namespace SRD
         private void ExportAsXlsxToolStripMenuItem_Click(object sender, EventArgs e)
         {
             bool proceedWithExport = true;
-            if(dgvAppList.RowCount > ExportRowWarning || dgvUnassignedList.RowCount > ExportRowWarning)
+            if (dgvAppList.RowCount > ExportRowWarning || dgvUnassignedList.RowCount > ExportRowWarning)
             {
                 DialogResult dr = MessageBox.Show("Exporting " + string.Format("{0:#,0}", ExportRowWarning) + " or more rows at a time may result in long export times.  If you proceed, the application will freeze until the export is completed.  Do you wish to continue?",
                     "Export Notice", MessageBoxButtons.YesNo, MessageBoxIcon.Warning);
 
-                if(dr == DialogResult.Yes)
+                if (dr == DialogResult.Yes)
                 {
                     proceedWithExport = true;
-                } else
+                }
+                else
                 {
                     proceedWithExport = false;
                 }
             }
 
-            if(proceedWithExport == true)
+            if (proceedWithExport == true)
             {
                 switch (tcMain.SelectedTab.Name)
                 {
                     case "tabApplicationList":
                         if (dgvAppList.RowCount > 0)
                         {
-                            if(dgvAppList.RowCount < 1048576)
+                            if (dgvAppList.RowCount < 1048576)
                             {
                                 Local.ExportXlsx(dgvAppList, "Data\\Exports", ReportingTableDesign, ReportingWorkbookTitle, ReportingWorkbookCompany, ReportingWorksheetName);
-                            } else
+                            }
+                            else
                             {
                                 MessageBox.Show("Too many rows to export to xlsx, please export to CSV", "Export", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                             }
@@ -268,7 +275,7 @@ namespace SRD
                         break;
                 }
             }
-            
+
         }
 
         private void AboutApplicationToolStripMenuItem_Click(object sender, EventArgs e)
@@ -368,13 +375,21 @@ namespace SRD
                 }
             }
         }
+        #endregion
 
+        #region Methods
         private void dgvRowPostPaint(object sender, DataGridViewRowPostPaintEventArgs e)
         {
             using (SolidBrush b = new SolidBrush(((DataGridView)sender).RowHeadersDefaultCellStyle.ForeColor))
             {
                 e.Graphics.DrawString((e.RowIndex + 1).ToString(), e.InheritedRowStyle.Font, b, e.RowBounds.Location.X + 10, e.RowBounds.Location.Y + 4);
             }
+        }
+        #endregion
+
+        private void cbCustomerPicker_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            PlatformCID = cbCustomerPicker.SelectedIndex + 1;
         }
     }
 }

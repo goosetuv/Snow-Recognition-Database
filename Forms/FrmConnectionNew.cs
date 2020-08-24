@@ -1,25 +1,28 @@
-﻿using Laim;
+﻿#region Dependencies
+using Laim;
 using System;
 using System.IO;
 using System.Drawing;
 using System.Windows.Forms;
+#endregion
 
 namespace SRD.Forms
 {
     public partial class FrmConnectionNew : Form
     {
+        #region Fields
         private string SqlConnectionString = "";
+        #endregion
+
+        #region Constructor
         public FrmConnectionNew()
         {
             InitializeComponent();
         }
+        #endregion
 
-        private void rbWindowsAuth_CheckedChanged(object sender, EventArgs e)
-        {
-            AuthenticationMethod();
-        }
-
-        private void AuthenticationMethod()
+        #region Methods
+      private void AuthenticationMethod()
         {
             if (rbWindowsAuth.Checked == true)
             {
@@ -39,18 +42,26 @@ namespace SRD.Forms
             }
             this.CenterToParent(); //really ghetto but it works
         }
+        #endregion
+
+        #region Events
+        private void rbWindowsAuth_CheckedChanged(object sender, EventArgs e)
+        {
+            AuthenticationMethod();
+        }
 
         private void FrmConnectionNew_Load(object sender, EventArgs e)
         {
             AuthenticationMethod();
-            
+
             try
             {
                 foreach (var i in MSSqlServer.GetServerList())
                 {
                     cbSqlServer.Items.Add(i);
                 }
-            } catch
+            }
+            catch
             {
                 // do nothing
             }
@@ -60,7 +71,7 @@ namespace SRD.Forms
         {
             try
             {
-                if(cbSqlServer.Text.Length > 0 || txtSqlPassword.Text.Length > 0 || txtSqlUsername.Text.Length > 0)
+                if (cbSqlServer.Text.Length > 0 || txtSqlPassword.Text.Length > 0 || txtSqlUsername.Text.Length > 0)
                 {
                     bool ConnectionStatus = false;
 
@@ -75,12 +86,14 @@ namespace SRD.Forms
                     { MessageBox.Show("Connection Unsuccessful", "Connection Test", MessageBoxButtons.OK, MessageBoxIcon.Exclamation); ConnectionStatus = false; }
 
                     if (ConnectionStatus == true) { btnSave.Enabled = true; }
-                } else
+                }
+                else
                 {
                     MessageBox.Show("One of the required fields are empty.", "New Connection", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
                 }
 
-            } catch (Exception ex)
+            }
+            catch (Exception ex)
             {
                 MessageBox.Show(ex.Message);
             }
@@ -90,19 +103,21 @@ namespace SRD.Forms
         {
             try
             {
-                string[] nl = { "SqlConnectionString", "CreatedBy", "CreatedDate"};
-                string[] vl = { Kryptos.Encrypt(SqlConnectionString, Kryptos.GetHardwareID()), Environment.UserName, DateTime.Now.ToString("F")};
+                string[] nl = { "SqlConnectionString", "CreatedBy", "CreatedDate" };
+                string[] vl = { Kryptos.Encrypt(SqlConnectionString, Kryptos.GetHardwareID()), Environment.UserName, DateTime.Now.ToString("F") };
 
                 XmlConfigurator.Write("Connections\\" + txtConnectionName.Text + ".config", nl, vl);
-                if(File.Exists("Connections\\" + txtConnectionName.Text + ".config"))
+                if (File.Exists("Connections\\" + txtConnectionName.Text + ".config"))
                 {
                     MessageBox.Show("Connection Saved", "New Connection", MessageBoxButtons.OK, MessageBoxIcon.Information);
                     Close();
                 }
-            } catch (Exception ex)
+            }
+            catch (Exception ex)
             {
                 MessageBox.Show(ex.Message);
             }
         }
+        #endregion
     }
 }

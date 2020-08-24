@@ -439,6 +439,7 @@
             this.cbCustomerPicker.Name = "cbCustomerPicker";
             this.cbCustomerPicker.Size = new System.Drawing.Size(149, 21);
             this.cbCustomerPicker.TabIndex = 5;
+            this.cbCustomerPicker.SelectedIndexChanged += new System.EventHandler(this.cbCustomerPicker_SelectedIndexChanged);
             // 
             // FrmMain
             // 

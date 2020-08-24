@@ -310,7 +310,9 @@ ORDER BY A.Name;</value>
     <value>SELECT U.CID, 
        S.*
 FROM SnowLicenseManager.dbo.tblSoftwareCIDUnassigned U
-     JOIN SnowLicenseManager.dbo.tblSoftware S ON S.SoftwareCheckSum = U.SoftwareCheckSum;</value>
+     JOIN SnowLicenseManager.dbo.tblSoftware S ON S.SoftwareCheckSum = U.SoftwareCheckSum
+WHERE U.CID = @CID;</value>
+    <comment>Has Customer Selector Parameter</comment>
   </data>
   <data name="GetUnassignedApplicationListComp" xml:space="preserve">
     <value>SELECT AC.ComputerName,
@@ -331,12 +333,14 @@ FROM SnowLicenseManager.dbo.tblSoftwareCIDUnassigned U
 			   FS.SwLastScanned
 FROM SnowInventory.inv.vFilterSoftware FS LEFT JOIN SnowInventory.inv.vAllComputers AC ON AC.ComputerID = FS.ComputerID 
 WHERE {ColumnName} = @SearchTerm</value>
+    <comment>Has Customer Selector Parameter</comment>
   </data>
   <data name="GetUnassignedApplicationListEmpty" xml:space="preserve">
     <value>SELECT TOP 0 U.CID, 
        S.*
 FROM SnowLicenseManager.dbo.tblSoftwareCIDUnassigned U
      JOIN SnowLicenseManager.dbo.tblSoftware S ON S.SoftwareCheckSum = U.SoftwareCheckSum;</value>
+    <comment>Has Customer Selector Parameter</comment>
   </data>
   <data name="GetUnassignedApplicationListSearch" xml:space="preserve">
     <value>SELECT U.CID, 
@@ -344,5 +348,6 @@ FROM SnowLicenseManager.dbo.tblSoftwareCIDUnassigned U
 FROM SnowLicenseManager.dbo.tblSoftwareCIDUnassigned U
      JOIN SnowLicenseManager.dbo.tblSoftware S ON S.SoftwareCheckSum = U.SoftwareCheckSum
 WHERE {ColumnName} {Operator} @SearchTerm</value>
+    <comment>Has Customer Selector Parameter</comment>
   </data>
 </root>

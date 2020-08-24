@@ -1,39 +1,28 @@
-﻿using Laim;
+﻿#region Dependencies
+using Laim;
 using System;
 using System.IO;
 using System.Windows.Forms;
+#endregion
 
 namespace SRD.Forms
 {
     public partial class FrmStartup : Form
     {
 
+        #region Constructor
         public FrmStartup()
         {
             InitializeComponent();
         }
+        #endregion
 
-        private void FrmStartup_Load(object sender, EventArgs e)
-        {
-            try
-            {
-                CreateDirectories();
-                if (cbConnectionList.SelectedIndex < 0)
-                {
-                    btnStartProgram.Enabled = false;
-                }
-                RefreshConnectionList();
-            } catch (Exception ex)
-            {
-                MessageBox.Show(ex.Message);
-            }
-        }
-
+        #region Methods
         void CreateDirectories()
         {
             string[] directories = { "Connections", "Data\\Exports" };
 
-            foreach(var i in directories)
+            foreach (var i in directories)
             {
                 if (Directory.Exists(i) == false)
                 {
@@ -53,13 +42,32 @@ namespace SRD.Forms
                 }
             }
         }
+        #endregion
+
+        #region Events
+        private void FrmStartup_Load(object sender, EventArgs e)
+        {
+            try
+            {
+                CreateDirectories();
+                if (cbConnectionList.SelectedIndex < 0)
+                {
+                    btnStartProgram.Enabled = false;
+                }
+                RefreshConnectionList();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+            }
+        }
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Code Quality", "IDE0067:Dispose objects before losing scope", Justification = "<Pending>")]
         private void btnStartProgram_Click(object sender, EventArgs e)
         {
             try
             {
-                if(File.Exists(Local.AppConfig))
+                if (File.Exists(Local.AppConfig))
                 {
                     FrmMain frm = new FrmMain
                     {
@@ -67,7 +75,8 @@ namespace SRD.Forms
                     };
                     frm.Show();
                     Hide();
-                } else
+                }
+                else
                 {
                     FrmSettings frm = new FrmSettings();
                     using (frm)
@@ -110,5 +119,6 @@ namespace SRD.Forms
             RefreshConnectionList();
             MessageBox.Show("Connection List refreshed", "Connection List", MessageBoxButtons.OK, MessageBoxIcon.Information);
         }
+        #endregion
     }
 }

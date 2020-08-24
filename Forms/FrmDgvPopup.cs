@@ -1,14 +1,17 @@
-﻿using Laim;
+﻿#region Dependencies
+using Laim;
 using OfficeOpenXml.Table;
 using System;
 using System.Collections.Generic;
 using System.Data.SqlClient;
 using System.Windows.Forms;
+#endregion
 
 namespace SRD.Forms
 {
     public partial class FrmDgvPopup : Form
     {
+        #region Fields
         public string SearchString { get; set; }
         public string PopupType { get; set; }
         public string SqlConnection { get; set; }
@@ -17,12 +20,16 @@ namespace SRD.Forms
         public string ReportingWorkbookCompany { get; set; }
         public string ReportingWorksheetName { get; set; }
         public int DatabaseCommandTimeout { get; set; }
+        #endregion
 
+        #region Constructor
         public FrmDgvPopup()
         {
             InitializeComponent();
         }
+        #endregion
 
+        #region Events
         private void FrmDgvPopup_Load(object sender, EventArgs e)
         {
             try
@@ -31,14 +38,15 @@ namespace SRD.Forms
                 {
                     case "UnassignedCompSearch":
                         Text = "Computers with Unassigned Application";
-                        List<SqlParameter> SqlParameters = new List<SqlParameter> { new SqlParameter("@SearchTerm", SearchString) };
+                        List<SqlParameter> SqlParameters = new List<SqlParameter> { new SqlParameter("@SearchTerm", SearchString) };  // the below line uses a replace because i want to eventually all search via diff. fields
                         dgvPopup.DataSource = MSSqlServer.ExecuteReadDataTable(SqlConnection, Properties.Sql.GetUnassignedApplicationListComp.Replace("{ColumnName}", "FS.SwPathName"), SqlParameters, DatabaseCommandTimeout);
                         break;
                     default:
                         Text = "Data Popup";
                         break;
                 }
-            } catch (Exception ex)
+            }
+            catch (Exception ex)
             {
                 MessageBox.Show(ex.Message, "Uncaught Exception", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
             }
@@ -56,7 +64,8 @@ namespace SRD.Forms
                 {
                     MessageBox.Show("No data to export", "Export", MessageBoxButtons.OK, MessageBoxIcon.Information);
                 }
-            } catch (Exception ex)
+            }
+            catch (Exception ex)
             {
                 MessageBox.Show(ex.Message, "Uncaught Exception", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
             }
@@ -81,10 +90,12 @@ namespace SRD.Forms
                 {
                     MessageBox.Show("No data to export", "Export", MessageBoxButtons.OK, MessageBoxIcon.Information);
                 }
-            } catch (Exception ex)
+            }
+            catch (Exception ex)
             {
                 MessageBox.Show(ex.Message, "Uncaught Exception", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
             }
         }
+        #endregion
     }
 }
